@@ -1,16 +1,11 @@
-const util = require('util');
-const exec = util.promisify(require('child_process').exec);
-
-const $ = (cmd) => exec(cmd)
-  .then(({ stdout, stderr, code }) => ({ stdout: stdout.trim(), stderr, code }))
-  .catch((e) => e);
+#!/usr/bin/env zx
 
 const img = 'nozich/bunode'
 
 async function main() {
-  await $(`docker pull ${img}:latest`)
+  await $`docker pull ${img}:latest`
 
-  const { stdout: inspect } = await $(`docker buildx inspect | grep 'Platforms:' | sed 's/Platforms: //'`);
+  const { stdout: inspect } = await $`docker buildx inspect | grep 'Platforms:' | sed 's/Platforms: //'`;
 
   const platforms = inspect.split(',').map(e => e.trim()).map((p) => ({
     platform: p,
@@ -22,7 +17,7 @@ async function main() {
   console.log(`platforms`, platforms.map((p) => p.tag).join(','));
 
   const built = (await Promise.all(platforms.map(async ({ platform, tag }) => {
-    const build = await $(`docker buildx build --platform=${platform} -t ${img}:${tag} --push .`)
+    const build = await $`docker buildx build --platform=${platform} -t ${img}:${tag} --push .`
       .catch((e) => e);
 
     console.log(`[BUILD] [END] [${platform}] [${tag}] {code: ${build.code}}`);
@@ -58,13 +53,13 @@ async function main() {
 
   console.log(`annotates`, annotates.map(({ tag, os, arch }) => ({ tag, os, arch })));
 
-  await $(`docker manifest create --amend ${img}:latest ${annotates.map(({ tag }) => `${img}:${tag}`).join(' ')}`);
+  await $`docker manifest create --amend ${img}:latest ${annotates.map(({ tag }) => `${img}:${tag}`).join(' ')}`;
 
   await Promise.all(annotates.map(async ({ os, arch, tag }) => {
-    return $(`docker manifest annotate ${img} ${img}:${tag} --os ${os} --arch ${arch}`);
+    return $`docker manifest annotate ${img} ${img}:${tag} --os ${os} --arch ${arch}`;
   }));
 
-  await $(`docker manifest push --purge ${img}:latest`)
+  await $`docker manifest push --purge ${img}:latest`
 }
 
 main();

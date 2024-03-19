@@ -10,6 +10,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | ba
 RUN nvm install --lts
 RUN nvm use --lts
 RUN npm install -g npm@latest
+RUN npm install -g zx
 
 RUN pip3 install --upgrade pip
 RUN pip3 install --upgrade awscli
