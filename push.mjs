@@ -20,9 +20,9 @@ async function main() {
     const build = await $`docker buildx build --platform=${platform} -t ${img}:${tag} --push .`
       .catch((e) => e);
 
-    console.log(`[BUILD] [END] [${platform}] [${tag}] {code: ${build.code}}`);
+    console.log(`[BUILD] [END] [${platform}] [${tag}] {exitCode: ${build.exitCode}}`);
 
-    return (!build.code || build.code === 0) && tag
+    return (build.exitCode === 0) && tag
   }))).filter(Boolean);
 
   console.log(`built`, built);
@@ -53,7 +53,11 @@ async function main() {
 
   console.log(`annotates`, annotates.map(({ tag, os, arch }) => ({ tag, os, arch })));
 
-  await $`docker manifest create --amend ${img}:latest ${annotates.map(({ tag }) => `${img}:${tag}`).join(' ')}`;
+  const tags = annotates.map(({ tag }) => `${img}:${tag}`)
+
+  console.log(`tags`, typeof tags, tags);
+
+  await $(`docker manifest create --amend ${img}:latest ${tags.join(' ')}`);
 
   await Promise.all(annotates.map(async ({ os, arch, tag }) => {
     return $`docker manifest annotate ${img} ${img}:${tag} --os ${os} --arch ${arch}`;
