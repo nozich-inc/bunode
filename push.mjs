@@ -55,9 +55,9 @@ async function main() {
 
   const tags = annotates.map(({ tag }) => `${img}:${tag}`)
 
-  console.log(`tags`, typeof tags, tags);
+  tags.unshift(`${img}:latest`)
 
-  await $(`docker manifest create --amend ${img}:latest ${tags.join(' ')}`);
+  await $`docker manifest create --amend ${tags}`;
 
   await Promise.all(annotates.map(async ({ os, arch, tag }) => {
     return $`docker manifest annotate ${img} ${img}:${tag} --os ${os} --arch ${arch}`;
