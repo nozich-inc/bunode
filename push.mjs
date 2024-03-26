@@ -60,7 +60,7 @@ async function main() {
   await $`docker manifest create --amend ${tags}`;
 
   await Promise.all(annotates.map(async ({ os, arch, tag }) => {
-    return $`docker manifest annotate ${img} ${img}:${tag} --os ${os} --arch ${arch}`;
+    return $`docker manifest annotate ${img}:latest ${img}:${tag} --os ${os} --arch ${arch}`;
   }));
 
   await $`docker manifest push --purge ${img}:latest`

@@ -2,8 +2,13 @@ FROM oven/bun:latest
 
 SHELL ["/bin/bash", "--login", "-c"]
 
-RUN apt-get update && apt-get install -y curl zsh vim docker.io unzip git python3 python3-pip
+RUN apt-get update && apt-get install -y curl zsh vim unzip git python3 python3-pip
 RUN bun upgrade
+
+COPY docker-repo.sh .
+RUN chmod +x docker-repo.sh
+RUN ./docker-repo.sh
+RUN apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 RUN curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | zsh || true
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
