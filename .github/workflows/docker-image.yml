@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: pwd && ls -lash && whoami && node -v && npm -v && node ./push.mjs
+      run: pwd && ls -lash && whoami && node -v && npm -v && npm i -g zx@latest && zx -v && node ./push.mjs
