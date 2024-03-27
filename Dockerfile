@@ -1,9 +1,8 @@
-FROM oven/bun:latest
+FROM node:20-bookworm-slim
 
 SHELL ["/bin/bash", "--login", "-c"]
 
 RUN apt-get update && apt-get install -y curl zsh vim unzip git python3 python3-pip
-RUN bun upgrade
 
 COPY docker-repo.sh .
 RUN chmod +x docker-repo.sh
@@ -11,14 +10,10 @@ RUN ./docker-repo.sh
 RUN apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 RUN curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | zsh || true
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
-RUN nvm install --lts
-RUN nvm use --lts
-RUN npm install -g npm@latest
-RUN npm install -g zx
 
-RUN pip3 install --upgrade pip
-RUN pip3 install --upgrade awscli
+RUN npm i -g npm@latest
+RUN npm i -g zx
+RUN npm i -g bun
 
 RUN echo "alias python=$(which python3)" >> ~/.bashrc
 RUN echo "alias pip=$(which pip3)" >> ~/.bashrc
