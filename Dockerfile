@@ -15,6 +15,8 @@ RUN npm i -g npm@latest
 RUN npm i -g zx
 RUN npm i -g bun
 
+RUN bun upgrade
+
 RUN echo "alias python=$(which python3)" >> ~/.bashrc
 RUN echo "alias pip=$(which pip3)" >> ~/.bashrc
 
