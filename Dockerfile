@@ -15,11 +15,10 @@ RUN npm i -g npm@latest
 RUN npm i -g zx
 
 RUN curl -fsSL https://bun.sh/install | bash
-RUN bun upgrade
+RUN source ~/.bashrc
 
 RUN echo "alias python=$(which python3)" >> ~/.bashrc
 RUN echo "alias pip=$(which pip3)" >> ~/.bashrc
-
 RUN source ~/.bashrc
 
 RUN git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
