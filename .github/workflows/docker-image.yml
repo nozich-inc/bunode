@@ -16,7 +16,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Docker Hub Login
-      run: docker login -u nozich --pasword ${DOCKER_ACCESS_TOKEN}
+      run: docker login -u nozich --password ${DOCKER_ACCESS_TOKEN}
 
     - name: Build the Docker image
       run: pwd && ls -lash && whoami && echo "node version $(node -v)" && echo "npm version $(npm -v)" && npm i -g zx@latest && echo "zx version $(zx -v)" && zx ./push.mjs
