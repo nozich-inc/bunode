@@ -13,8 +13,8 @@ RUN curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/instal
 
 RUN npm i -g npm@latest
 RUN npm i -g zx
-RUN npm i -g bun
 
+RUN curl -fsSL https://bun.sh/install | bash
 RUN bun upgrade
 
 RUN echo "alias python=$(which python3)" >> ~/.bashrc
