@@ -2,7 +2,13 @@ FROM node:20-bookworm-slim
 
 SHELL ["/bin/bash", "--login", "-c"]
 
-RUN apt-get update && apt-get install -y curl zsh vim unzip git python3 python3-pip
+RUN apt-get update && apt-get install -y curl
+RUN apt-get update && apt-get install -y zsh
+RUN apt-get update && apt-get install -y vim
+RUN apt-get update && apt-get install -y unzip
+RUN apt-get update && apt-get install -y git
+RUN apt-get update && apt-get install -y python3
+RUN apt-get update && apt-get install -y python3-pip
 
 COPY docker-repo.sh .
 RUN chmod +x docker-repo.sh
@@ -16,6 +22,7 @@ RUN npm i -g zx
 
 RUN curl -fsSL https://bun.sh/install | bash
 RUN source ~/.bashrc
+RUN /root/.bun/bin/bun upgrade
 
 RUN echo "alias python=$(which python3)" >> ~/.bashrc
 RUN echo "alias pip=$(which pip3)" >> ~/.bashrc
