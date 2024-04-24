@@ -34,4 +34,6 @@ RUN zsh -c "cd ~/.vim_runtime && git reset --hard && git clean -d --force && git
 
 RUN echo "source ~/.bashrc" >> ~/.zshrc
 
+ENTRYPOINT [ "source ~/.bashrc && zsh" ]
+
 WORKDIR /app
