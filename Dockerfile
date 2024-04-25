@@ -1,6 +1,6 @@
 FROM node:20-bookworm-slim
 
-SHELL ["/bin/bash", "--login", "-c"]
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 RUN apt-get update && apt-get install -y curl
 RUN apt-get update && apt-get install -y zsh
@@ -10,8 +10,8 @@ RUN apt-get update && apt-get install -y git
 RUN apt-get update && apt-get install -y python3
 RUN apt-get update && apt-get install -y python3-pip
 
-COPY docker-repo.sh .
-RUN chmod +x docker-repo.sh
+COPY *.sh .
+RUN chmod +x *.sh
 RUN ./docker-repo.sh
 RUN apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
@@ -21,19 +21,16 @@ RUN npm i -g npm@latest
 RUN npm i -g zx
 
 RUN curl -fsSL https://bun.sh/install | bash
-RUN source ~/.bashrc
+RUN source /root/.bashrc
 RUN /root/.bun/bin/bun upgrade
 
-RUN echo "alias python=$(which python3)" >> ~/.bashrc
-RUN echo "alias pip=$(which pip3)" >> ~/.bashrc
-RUN source ~/.bashrc
+RUN echo "alias python=$(which python3)" >> /root/.bashrc
+RUN echo "alias pip=$(which pip3)" >> /root/.bashrc
 
-RUN git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
-RUN sh ~/.vim_runtime/install_awesome_vimrc.sh
-RUN zsh -c "cd ~/.vim_runtime && git reset --hard && git clean -d --force && git pull --rebase && python3 update_plugins.py"
+RUN git clone --depth=1 https://github.com/amix/vimrc.git /root/.vim_runtime
+RUN sh /root/.vim_runtime/install_awesome_vimrc.sh
+RUN cd /root/.vim_runtime && git reset --hard && git clean -d --force && git pull --rebase && python3 update_plugins.py
 
-RUN echo "source ~/.bashrc" >> ~/.zshrc
-
-ENTRYPOINT [ "source ~/.bashrc && zsh" ]
+RUN echo "source /root/.bashrc" >> /root/.zshrc
 
 WORKDIR /app
