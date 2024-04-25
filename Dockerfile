@@ -2,6 +2,8 @@ FROM node:20-bookworm-slim
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
+SHELL ["/bin/bash", "-l", "-c"]
+
 RUN apt-get update && apt-get install -y curl
 RUN apt-get update && apt-get install -y zsh
 RUN apt-get update && apt-get install -y vim
