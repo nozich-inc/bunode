@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y python3-pip
 
 COPY *.sh .
 RUN chmod +x *.sh
-RUN ./docker-repo.sh
+RUN ./docker-setup.sh
 RUN apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 RUN curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | zsh || true
