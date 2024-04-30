@@ -23,8 +23,11 @@ RUN npm i -g npm@latest
 RUN npm i -g zx
 
 RUN curl -fsSL https://bun.sh/install | bash
-RUN source /root/.bashrc
-RUN /root/.bun/bin/bun upgrade
+
+# RUN ln -s /root/.bun/bin/bun /usr/local/bin/bun
+ENV PATH="/root/.bun/bin:${PATH}"
+
+RUN bun upgrade
 
 RUN echo "alias python=$(which python3)" >> /root/.bashrc
 RUN echo "alias pip=$(which pip3)" >> /root/.bashrc
