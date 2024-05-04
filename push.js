@@ -1,11 +1,11 @@
-#!/usr/bin/env zx
+import { $ } from 'bun';
 
 const img = 'nozich/bunode'
 
 async function main() {
   await $`docker pull ${img}:latest`
 
-  const { stdout: inspect } = await $`docker buildx inspect | grep 'Platforms:' | sed 's/Platforms: //'`;
+  const inspect = await $`docker buildx inspect | grep 'Platforms:' | sed 's/Platforms: //'`.text();
 
   const platforms = inspect.split(',').map(e => e.trim()).map((p) => ({
     platform: p,
@@ -17,7 +17,7 @@ async function main() {
   console.log(`platforms`, platforms.map((p) => p.tag).join(','));
 
   const built = (await Promise.all(platforms.map(async ({ platform, tag }) => {
-    const build = await $`docker buildx build --platform=${platform} -t ${img}:${tag} --push .`
+    const build = await $`docker buildx build --platform=${platform} -t ${img}:${tag} --push .`.text()
       .catch((e) => e);
 
     console.log(`[BUILD] [END] [${platform}] [${tag}] {exitCode: ${build.exitCode}}`);
@@ -67,3 +67,4 @@ async function main() {
 }
 
 main();
+
