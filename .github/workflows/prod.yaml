@@ -14,4 +14,4 @@ jobs:
       - name: Deploy to Docker Hub Production
         run:
             ls -lash &&
-            docker run --rm -v ./:/app nozich/bunode:latest zsh -c "ls -lash && bun run ./push.mjs"
+            docker run --rm -v ./:/app nozich/bunode:latest zsh -c "ls -lash && bun run ./push.js"
