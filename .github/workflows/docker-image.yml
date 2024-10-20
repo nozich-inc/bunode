@@ -27,4 +27,7 @@ jobs:
         echo "npm version $(npm -v)" &&
         npm i -g zx@latest && echo "zx version $(zx -v)" &&
         curl -fsSL https://bun.sh/install | bash &&
-        bun run ./push.mjs
+        ls -lash /home/runner/.bun &&
+        ls -lash /home/runner/.bun/bin &&
+        ls -lash /home/runner/work &&
+        /home/runner/.bun/bin/bun run ./push.mjs
