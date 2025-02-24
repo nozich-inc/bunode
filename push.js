@@ -5,21 +5,17 @@ const img = 'nozich/bunode'
 async function main() {
     await $`docker pull ${img}:latest`
 
-    // linux/arm64, linux/amd64, linux/riscv64, linux/ppc64le, linux/s390x, linux/386, linux/mips64le, linux/arm/v7, linux/arm/v6
+    // Anil's MB Pro 250225: linux/arm64, linux/amd64, linux/riscv64, linux/ppc64le, linux/s390x, linux/386, linux/mips64le, linux/arm/v7, linux/arm/v6
     const inspect = await $`docker buildx inspect | grep 'Platforms:' | sed 's/Platforms: //'`.text();
 
     // Manuelly set the platforms
-    const inspects = [];
-    if (inspect.includes('linux/arm64')) {
-        inspects.push('linux/arm64');
-    }
-    if (inspect.includes('linux/amd64')) {
-        inspects.push('linux/amd64');
-    }
-
+    const inspectionList = [];
+    if (inspect.includes('linux/arm64')) { inspectionList.push('linux/arm64'); }
+    if (inspect.includes('linux/amd64')) { inspectionList.push('linux/amd64'); }
+    const inspects = inspectionList.join(',');
     console.log(`inspects`, inspects);
 
-    const platforms = inspects.split(',').map(e => e.trim()).map((p) => ({
+    const platforms = inspects.join(',').split(',').map(e => e.trim()).map((p) => ({
         platform: p,
         os: p.split('/')[0],
         arch: p.split('/')[1],
@@ -32,8 +28,7 @@ async function main() {
     const built = (await Promise.all(platforms.map(async ({ platform, tag }) => {
         console.log({ platform, img, tag });
 
-        const build = await $`docker buildx build --platform=${platform} -t ${img}:${tag} --push .`.text()
-            .catch((e) => e);
+        const build = await $`docker buildx build --platform=${platform} -t ${img}:${tag} --push .`;
 
         console.log({ platform, tag, build });
 
