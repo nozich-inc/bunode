@@ -1,4 +1,4 @@
-FROM node:20-bookworm-slim
+FROM node:22-slim
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y git
 RUN apt-get update && apt-get install -y python3
 RUN apt-get update && apt-get install -y python3-pip
 RUN apt-get update && apt-get install -y ca-certificates
+RUN apt-get update && apt-get install -y btop
 
 RUN git clone --depth=1 https://github.com/amix/vimrc.git /root/.vim_runtime
 RUN sh /root/.vim_runtime/install_awesome_vimrc.sh
@@ -31,6 +32,7 @@ RUN curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/instal
 
 RUN npm i -g npm@latest
 RUN npm i -g zx
+RUN npm i -g cross-env
 
 RUN curl -fsSL https://bun.sh/install | bash
 RUN ln -s /root/.bun/bin/bun /usr/local/bin/bun
