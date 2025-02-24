@@ -15,7 +15,7 @@ async function main() {
     const inspects = inspectionList.join(',');
     console.log(`inspects`, inspects);
 
-    const platforms = inspects.join(',').split(',').map(e => e.trim()).map((p) => ({
+    const platforms = inspects.split(',').map(e => e.trim()).map((p) => ({
         platform: p,
         os: p.split('/')[0],
         arch: p.split('/')[1],
