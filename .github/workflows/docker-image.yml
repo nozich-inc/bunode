@@ -24,6 +24,7 @@ jobs:
         pwd &&
         ls -lash &&
         whoami &&
+        echo "bun version $(bun -v)" &&
         echo "node version $(node -v)" &&
         echo "npm version $(npm -v)" &&
         curl -fsSL https://bun.sh/install | bash &&
